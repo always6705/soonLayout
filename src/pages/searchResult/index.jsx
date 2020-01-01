@@ -15,9 +15,9 @@ import {
   Row,
   Select,
 } from 'antd';
-import React, {Component, Fragment} from 'react';
-import {PageHeaderWrapper} from '@ant-design/pro-layout';
-import {connect} from 'dva';
+import React, { Component, Fragment } from 'react';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { connect } from 'dva';
 import moment from 'moment';
 import CreateForm from './components/CreateForm';
 import StandardTable from './components/StandardTable';
@@ -25,7 +25,7 @@ import UpdateForm from './components/UpdateForm';
 import styles from './style.less';
 
 const FormItem = Form.Item;
-const {Option} = Select;
+const { Option } = Select;
 
 const getValue = obj =>
   Object.keys(obj)
@@ -36,7 +36,7 @@ const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['关闭', '运行中', '已上线', '异常'];
 
 /* eslint react/no-multi-comp:0 */
-@connect(({searchResult, loading}) => ({
+@connect(({ searchResult, loading }) => ({
   searchResult,
   loading: loading.models.searchResult,
 }))
@@ -91,7 +91,7 @@ class TableList extends Component {
       ],
 
       render(val) {
-        return <Badge status={statusMap[val]} text={status[val]}/>;
+        return <Badge status={statusMap[val]} text={status[val]} />;
       },
     },
     {
@@ -105,7 +105,7 @@ class TableList extends Component {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a>
-          <Divider type="vertical"/>
+          <Divider type="vertical" />
           <a href="">订阅警报</a>
         </Fragment>
       ),
@@ -113,17 +113,17 @@ class TableList extends Component {
   ];
 
   componentDidMount() {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'searchResult/fetch',
     });
   }
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const {dispatch} = this.props;
-    const {formValues} = this.state;
+    const { dispatch } = this.props;
+    const { formValues } = this.state;
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = {...obj};
+      const newObj = { ...obj };
       newObj[key] = getValue(filtersArg[key]);
       return newObj;
     }, {});
@@ -145,7 +145,7 @@ class TableList extends Component {
   };
 
   handleFormReset = () => {
-    const {form, dispatch} = this.props;
+    const { form, dispatch } = this.props;
     form.resetFields();
     this.setState({
       formValues: {},
@@ -157,15 +157,15 @@ class TableList extends Component {
   };
 
   toggleForm = () => {
-    const {expandForm} = this.state;
+    const { expandForm } = this.state;
     this.setState({
       expandForm: !expandForm,
     });
   };
 
   handleMenuClick = e => {
-    const {dispatch} = this.props;
-    const {selectedRows} = this.state;
+    const { dispatch } = this.props;
+    const { selectedRows } = this.state;
     if (!selectedRows) return;
 
     switch (e.key) {
@@ -195,7 +195,7 @@ class TableList extends Component {
   };
 
   handleSearch = () => {
-    const {dispatch, form} = this.props;
+    const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       const values = {
@@ -227,7 +227,7 @@ class TableList extends Component {
   };
 
   handleAdd = fields => {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'searchResult/add',
       payload: {
@@ -239,7 +239,7 @@ class TableList extends Component {
   };
 
   handleUpdate = fields => {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'searchResult/update',
       payload: {
@@ -253,8 +253,8 @@ class TableList extends Component {
   };
 
   renderSimpleForm() {
-    const {form} = this.props;
-    const {getFieldDecorator} = form;
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row
@@ -266,7 +266,7 @@ class TableList extends Component {
         >
           <Col md={8} sm={24}>
             <FormItem label="规则名称">
-              {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
+              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -303,7 +303,7 @@ class TableList extends Component {
                 }}
                 onClick={this.toggleForm}
               >
-                展开 <Icon type="down"/>
+                展开 <Icon type="down" />
               </a>
             </span>
           </Col>
@@ -314,7 +314,7 @@ class TableList extends Component {
 
   renderAdvancedForm() {
     const {
-      form: {getFieldDecorator},
+      form: { getFieldDecorator },
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -327,7 +327,7 @@ class TableList extends Component {
         >
           <Col md={8} sm={24}>
             <FormItem label="规则名称">
-              {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
+              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -435,7 +435,7 @@ class TableList extends Component {
               }}
               onClick={this.toggleForm}
             >
-              收起 <Icon type="up"/>
+              收起 <Icon type="up" />
             </a>
           </div>
         </div>
@@ -444,16 +444,17 @@ class TableList extends Component {
   }
 
   renderForm() {
-    const {expandForm} = this.state;
+    const { expandForm } = this.state;
     return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
   render() {
+    console.info(this.props);
     const {
-      searchResult: {data},
+      searchResult: { data },
       loading,
     } = this.props;
-    const {selectedRows, modalVisible, updateModalVisible, stepFormValues} = this.state;
+    const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
@@ -482,7 +483,7 @@ class TableList extends Component {
                   <Button>批量操作</Button>
                   <Dropdown overlay={menu}>
                     <Button>
-                      更多操作 <Icon type="down"/>
+                      更多操作 <Icon type="down" />
                     </Button>
                   </Dropdown>
                 </span>
@@ -498,7 +499,7 @@ class TableList extends Component {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible}/>
+        <CreateForm {...parentMethods} modalVisible={modalVisible} />
         {stepFormValues && Object.keys(stepFormValues).length ? (
           <UpdateForm
             {...updateMethods}

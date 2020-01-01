@@ -1,7 +1,8 @@
 export default {
   'menu.welcome': '欢迎',
   'menu.searchResult': '查询表格',
-  'menu.soon': '测试soon',
+  'menu.soonResult': 'Soon Query Result',
+  'menu.soonBuy': 'Soon Make Money',
   'menu.emptyPage': '空白页面',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',

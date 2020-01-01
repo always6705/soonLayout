@@ -1,14 +1,14 @@
 import request from '@/utils/request';
 
 export async function queryRule(params) {
-  // return request('/api/rule', {
-  //   params,
-  // });
-
-  return request('/soon/hello', {
-    method: 'GET',
+  return request('/api/rule', {
     params,
   });
+
+  // return request('/SoonResult/hello', {
+  //   method: 'GET',
+  //   params,
+  // });
 }
 export async function removeRule(params) {
   return request('/api/rule', {

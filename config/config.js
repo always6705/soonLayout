@@ -117,7 +117,7 @@ export default {
               component: './searchResult',
             }, // {
             //   path: '/newPage',
-            //   name: 'soon',
+            //   name: 'SoonResult',
             //   icon: 'smile',
             //   component: './index.jsx',
             // },
@@ -146,10 +146,16 @@ export default {
             //   component: './DashboardAnalysis',
             // },
             {
-              path: '/soon',
-              name: 'soon',
+              path: '/SoonResult',
+              name: 'soonResult',
               icon: 'smile',
-              component: './Soon',
+              component: './SoonResult',
+            },
+            {
+              path: '/SoonBuy',
+              name: 'soonBuy',
+              icon: 'smile',
+              component: './SoonBuy',
             },
             {
               component: './404',
