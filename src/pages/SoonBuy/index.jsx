@@ -1,5 +1,17 @@
 import React, { Component, Fragment } from 'react';
-import { Alert, Button, Card, Col, Divider, Form, Input, message, Row, Select } from 'antd';
+import {
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  Col,
+  Divider,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+} from 'antd';
 import styles from './style.less';
 import { connect } from 'dva';
 import Month from '../../../public/Month'; // 月份json
@@ -18,6 +30,8 @@ class SoonPage extends Component {
     this.monthList = Month.monthList;
 
     this.state = {
+      eachResult: true,
+      realBuy: false,
       tableList: [],
       yearList: [], // 年list
     };
@@ -37,6 +51,51 @@ class SoonPage extends Component {
     dispatch({
       type: 'searchResult/fetch',
       payload: {},
+    });
+  };
+
+  unlock = () => {
+    this.setState({
+      eachResult: !this.state.eachResult,
+    });
+  };
+
+  realBuy = e => {
+    this.setState({
+      realBuy: e.target.checked,
+    });
+
+    // console.info(e.target.checked);
+  };
+
+  insertEachResult = () => {
+    const { dispatch, form } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      message.destroy();
+
+      // TODO 将判空写成一个公共的方法
+
+      if (
+        typeof fieldsValue.createDate == 'undefined' ||
+        fieldsValue.createDate.trim() === '' ||
+        typeof fieldsValue.orderNumber == 'undefined' ||
+        fieldsValue.orderNumber.trim() === ''
+      ) {
+        message.error(`日期或期数不能为空!`);
+        return;
+      }
+
+      // data.createDate = fieldsValue.createDate;
+      // data.orderNumber = fieldsValue.orderNumber;
+
+      let data = { ...fieldsValue, eachResult: fieldsValue };
+
+      console.info(data);
+
+      dispatch({
+        type: 'soonBuyModel/insertEachResult',
+        payload: fieldsValue,
+      });
     });
   };
 
@@ -66,7 +125,11 @@ class SoonPage extends Component {
           </Col>
           <Col md={8} sm={24}>
             <div style={{ float: 'left' }}>
-              <Button type="primary" onClick={this.makeMoney.bind(this, 1)}>
+              <Button
+                type="primary"
+                onClick={this.makeMoney.bind(this, 1)}
+                disabled={!this.state.eachResult}
+              >
                 预测
               </Button>
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset.bind(this)}>
@@ -87,19 +150,33 @@ class SoonPage extends Component {
         >
           <Col md={11} sm={24}>
             <FormItem label="Actual Content">
-              {getFieldDecorator('contentActual')(<Input placeholder="请输入内容，如 '16,18'" />)}
+              {getFieldDecorator('contentActual')(
+                <Input
+                  placeholder="请输入内容，如 '16,18'"
+                  allowClear={true}
+                  disabled={!this.state.eachResult}
+                />,
+              )}
             </FormItem>
           </Col>
           <Col md={5} sm={24}>
             <FormItem label="Unit Price">
-              {getFieldDecorator('unitPrice')(<Input placeholder="price" />)}
+              {getFieldDecorator('unitPrice')(
+                <Input placeholder="price" allowClear={true} disabled={!this.state.eachResult} />,
+              )}
             </FormItem>
           </Col>
           <Col md={4} sm={24}>
             <div style={{ float: 'left' }}>
-              <Button type="primary" onClick={this.makeMoney.bind(this, 2)}>
+              <Button
+                type="primary"
+                onClick={this.makeMoney.bind(this, 2)}
+                disabled={!this.state.eachResult}
+                style={{ marginRight: 8 }}
+              >
                 Buy Num
               </Button>
+              <Checkbox onClick={this.realBuy.bind(this)}>真</Checkbox>
             </div>
           </Col>
         </Row>
@@ -114,16 +191,37 @@ class SoonPage extends Component {
           }}
         >
           <Col md={4} sm={24}>
-            <FormItem label="Rs1">{getFieldDecorator('rs1')(<Input placeholder="Rs1" />)}</FormItem>
+            <FormItem label="Rs1">
+              {getFieldDecorator('rs1')(<Input placeholder="Rs1" allowClear={true} />)}
+            </FormItem>
           </Col>
           <Col md={4} sm={24}>
-            <FormItem label="Rs2">{getFieldDecorator('rs2')(<Input placeholder="Rs2" />)}</FormItem>
+            <FormItem label="Rs2">
+              {getFieldDecorator('rs2')(<Input placeholder="Rs2" allowClear={true} />)}
+            </FormItem>
           </Col>
           <Col md={4} sm={24}>
-            <FormItem label="Rs3">{getFieldDecorator('rs3')(<Input placeholder="Rs3" />)}</FormItem>
+            <FormItem label="Rs3">
+              {getFieldDecorator('rs3')(<Input placeholder="Rs3" allowClear={true} />)}
+            </FormItem>
           </Col>
           <Col md={4} sm={24}>
-            <FormItem label="Rs4">{getFieldDecorator('rs4')(<Input placeholder="Rs4" />)}</FormItem>
+            <FormItem label="Rs4">
+              {getFieldDecorator('rs4')(<Input placeholder="Rs4" allowClear={true} />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <div style={{ float: 'left' }}>
+              <Button
+                type="danger"
+                disabled={this.state.eachResult}
+                style={{ marginRight: 8 }}
+                onClick={this.insertEachResult.bind(this)}
+              >
+                Each Result
+              </Button>
+              <Checkbox onClick={this.unlock.bind(this)}>锁</Checkbox>
+            </div>
           </Col>
         </Row>
         <Row
@@ -134,22 +232,34 @@ class SoonPage extends Component {
           }}
         >
           <Col md={4} sm={24}>
-            <FormItem label="Rs5">{getFieldDecorator('rs5')(<Input placeholder="Rs5" />)}</FormItem>
+            <FormItem label="Rs5">
+              {getFieldDecorator('rs5')(<Input placeholder="Rs5" allowClear={true} />)}
+            </FormItem>
           </Col>
           <Col md={4} sm={24}>
-            <FormItem label="Rs6">{getFieldDecorator('rs6')(<Input placeholder="Rs6" />)}</FormItem>
+            <FormItem label="Rs6">
+              {getFieldDecorator('rs6')(<Input placeholder="Rs6" allowClear={true} />)}
+            </FormItem>
           </Col>
           <Col md={4} sm={24}>
-            <FormItem label="Rs7">{getFieldDecorator('rs7')(<Input placeholder="Rs7" />)}</FormItem>
+            <FormItem label="Rs7">
+              {getFieldDecorator('rs7')(<Input placeholder="Rs7" allowClear={true} />)}
+            </FormItem>
           </Col>
           <Col md={4} sm={24}>
             <FormItem label="Odds">
-              {getFieldDecorator('odds')(<Input placeholder="Odds" />)}
+              {getFieldDecorator('odds')(
+                <Input placeholder="Odds" allowClear={true} disabled={!this.state.eachResult} />,
+              )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <div style={{ float: 'left' }}>
-              <Button type="primary" onClick={this.makeMoney.bind(this, 3)}>
+              <Button
+                type="primary"
+                onClick={this.makeMoney.bind(this, 3)}
+                disabled={!this.state.eachResult}
+              >
                 Calculate
               </Button>
               <Button
@@ -201,6 +311,7 @@ class SoonPage extends Component {
         }
         data.contentActual = fieldsValue.contentActual;
         data.unitPrice = fieldsValue.unitPrice;
+        data.realBuy = this.state.realBuy;
       }
 
       if (3 === step) {
@@ -230,13 +341,6 @@ class SoonPage extends Component {
         type: 'soonBuyModel/queryResult',
         payload: fieldsValue,
       });
-    });
-  };
-
-  getYearList = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'soonBuyModel/getYearList',
     });
   };
 

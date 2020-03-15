@@ -17,6 +17,14 @@ export async function test() {
   });
 }
 
+export async function insertEachResult(params) {
+  const url = `/soon/insertEachResult`;
+  return request(url, {
+    method: 'POST',
+    data: params,
+  });
+}
+
 // 查询 年list
 export async function getYearList() {
   const url = `/soon/getYearList`;

@@ -1,4 +1,4 @@
-import { makeMoney, test } from './service';
+import { makeMoney, insertEachResult, test } from './service';
 
 const Model = {
   namespace: 'soonBuyModel',
@@ -14,6 +14,15 @@ const Model = {
       console.info(response);
       yield call(test);
       console.info('test');
+      // yield put({
+      //   type: 'makeMoney',
+      //   payload: response,
+      // });
+    },
+
+    *insertEachResult({ payload }, { call, put }) {
+      const response = yield call(insertEachResult, payload);
+      console.info(response);
       // yield put({
       //   type: 'makeMoney',
       //   payload: response,

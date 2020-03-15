@@ -30,12 +30,12 @@ class SoonPage extends Component {
 
   columns = [
     {
-      title: '系统',
+      title: '系统(实际)',
       dataIndex: 'contentSystem',
       align: 'left',
-      width: '450px',
+      width: '600px',
       fixed: true,
-      render: contentSystem => {
+      render: (contentSystem, record) => {
         return (
           <div
             style={{
@@ -46,37 +46,37 @@ class SoonPage extends Component {
               // maxWidth: "450px"
             }}
           >
-            <Tooltip placement="top" title={contentSystem}>
+            <Tooltip placement="top" title={record.contentActual}>
               {contentSystem}
             </Tooltip>
           </div>
         );
       },
     },
-    {
-      title: '实际',
-      dataIndex: 'contentActual',
-      align: 'left',
-      width: '450px',
-      fixed: true,
-      render: contentActual => {
-        return (
-          <div
-            style={{
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-              cursor: 'pointer',
-              // maxWidth: "450px"
-            }}
-          >
-            <Tooltip placement="top" title={contentActual}>
-              {contentActual}
-            </Tooltip>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: '实际',
+    //   dataIndex: 'contentActual',
+    //   align: 'left',
+    //   width: '450px',
+    //   fixed: true,
+    //   render: contentActual => {
+    //     return (
+    //       <div
+    //         style={{
+    //           overflow: 'hidden',
+    //           whiteSpace: 'nowrap',
+    //           textOverflow: 'ellipsis',
+    //           cursor: 'pointer',
+    //           // maxWidth: "450px"
+    //         }}
+    //       >
+    //         <Tooltip placement="top" title={contentActual}>
+    //           {contentActual}
+    //         </Tooltip>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       title: '个数',
       dataIndex: 'resultTotal',
@@ -146,14 +146,18 @@ class SoonPage extends Component {
             xl: 48,
           }}
         >
-          <Col md={5} sm={24}>
+          <Col md={6} sm={24}>
             <FormItem label="日期">
-              {getFieldDecorator('createDate')(<Input placeholder="请输入日期，如 '2019-10-10'" />)}
+              {getFieldDecorator('createDate')(
+                <Input placeholder="请输入日期，如 '2019-10-10'" allowClear={true} />,
+              )}
             </FormItem>
           </Col>
-          <Col md={5} sm={24}>
+          <Col md={6} sm={24}>
             <FormItem label="期数">
-              {getFieldDecorator('orderNumber')(<Input placeholder="请输入期数，如'168'" />)}
+              {getFieldDecorator('orderNumber')(
+                <Input placeholder="请输入期数，如'168'" allowClear={true} />,
+              )}
             </FormItem>
           </Col>
           <Col md={4} sm={24}>
